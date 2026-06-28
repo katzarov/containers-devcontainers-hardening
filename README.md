@@ -17,14 +17,20 @@ Devcontainers (have all the risks of containers) but additioanllly do a lot cool
 VM is the least risk but also the least convenient.. And actually maybe kind of impossible since I'm always low on storage.
 
 https://itnext.io/security-hardening-of-your-dev-containers-with-docker-hardened-images-dhi-io-2bfb5d299b7f
+
 https://gitlab.com/lx-industries/setup-devcontainer-skill
+
 https://blog.theredguild.org/where-do-you-run-your-code-part-ii-2/
+
 https://socket.dev/blog/introducing-socket-firewall
+
 https://bernat.tech/posts/securing-python-supply-chain/
 
 
 https://blog.theredguild.org/where-do-you-run-your-code/
+
 https://github.com/Cyfrin/web3-dev-containers
+
 https://github.com/theredguild/devcontainer
 
 
