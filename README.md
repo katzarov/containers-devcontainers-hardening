@@ -16,6 +16,14 @@ Devcontainers (have all the risks of containers) but additioanllly do a lot cool
 
 VM is the least risk but also the least convenient.. And actually maybe kind of impossible since I'm always low on storage.
 
+https://github.com/w3cj/devcontainer-features/tree/main
+
+https://gist.github.com/w3cj/0b6d2c619e59768f592e1c7e8ec4cb93
+
+Devcontainers intro
+https://www.youtube.com/watch?v=kPMA9cnpScU&t=1004s
+
+
 https://itnext.io/security-hardening-of-your-dev-containers-with-docker-hardened-images-dhi-io-2bfb5d299b7f
 
 https://gitlab.com/lx-industries/setup-devcontainer-skill
@@ -47,17 +55,23 @@ I think here, we can try making that rootless, as we don't have the VM isolation
 
 ## Hardening Images/Containers
 
+https://code.visualstudio.com/docs/devcontainers/containers
+
+https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/base/about
+
+https://containers.dev/templates
+https://containers.dev/features
+
 Here, we are going to spend most of our time. Basing a lot of this on few really great blogs and some LLM suggestions.
 
-## Python
+## Python Supply Chain Hardening
 
 Apperently people are rooting for "uv", a single tool that replaces all other ones - pip, vnev, pyenv, idk etc.
 And I am liking that - it seems like pnpm -> does all things that npm does not do by default but really should.
 And you can also specify a min release age cooldown.
 
-## Node
+## app/process hardening
 
-Use Deno where you can specify file system and netwrok access permissions.
-
-Node as well https://nodejs.org/docs/latest-v26.x/api/permissions.html
-But it doenst look like this gives any security guarantees, at least on Node...
+- create dedicated low-privilege user
+- do some process level sandboxing with tools like bwrap/firejail/Landlock
+- Deno, Node can specify file system and netwrok access permissions https://nodejs.org/docs/latest-v26.x/api/permissions.html But it doenst look like this gives any security guarantees, at least on Node...

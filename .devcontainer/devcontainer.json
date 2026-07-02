@@ -1,0 +1,24 @@
+{
+    "name": "base-setup",
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            // "installZsh": true, // already in base debian image
+            // "installOhMyZsh": true,
+            // "configureZshAsDefaultShell": true
+        },
+        // "ghcr.io/devcontainers/features/docker-in-docker:2": {
+        //     "moby": false
+        // },
+        // "ghcr.io/devcontainers/features/sshd:1": {}
+    },
+    // "workspaceMount": "source=/path/to/the/project/you/want/to/work/in/here,target=/workspace,type=bind",
+    // "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": []
+        }
+    },
+    "remoteUser": "node"
+}
