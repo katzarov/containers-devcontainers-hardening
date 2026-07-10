@@ -1,24 +1,45 @@
 {
-    "name": "base-setup",
-    "image": "mcr.microsoft.com/devcontainers/base:debian",
-    "features": {
-        "ghcr.io/devcontainers/features/common-utils:2": {
-            // "installZsh": true, // already in base debian image
-            // "installOhMyZsh": true,
-            // "configureZshAsDefaultShell": true
-        },
-        // "ghcr.io/devcontainers/features/docker-in-docker:2": {
-        //     "moby": false
-        // },
-        // "ghcr.io/devcontainers/features/sshd:1": {}
-    },
-    // "workspaceMount": "source=/path/to/the/project/you/want/to/work/in/here,target=/workspace,type=bind",
-    // "workspaceFolder": "/workspace",
-    "customizations": {
-        "vscode": {
-            "settings": {},
-            "extensions": []
-        }
-    },
-    "remoteUser": "node"
+  "name": "base-setup",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      // "installZsh": true, // already in base debian image
+      // "installOhMyZsh": true,
+      // "configureZshAsDefaultShell": true
+    }
+    // "ghcr.io/devcontainers/features/docker-in-docker:2": {
+    //     "moby": false
+    // },
+    // "ghcr.io/devcontainers/features/sshd:1": {}
+  },
+  // "workspaceMount": "source=/path/to/the/project/you/want/to/work/in/here,target=/workspace,type=bind",
+  // "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": []
+    }
+  },
+  "remoteUser": "vscode",
+
+  // Commands to run during container lifecycle
+  "initializeCommand": "echo 'Initializing hardened dev container...'",
+  "postStartCommand": "echo '🚀 Dev container is ready for Web3 development!'",
+
+  // Writable mounts in case you want to set --read-only above.
+  // Currently no additional mounts are configured
+  // can set .git to be readonly for example...
+  "mounts": []
+
+  // Workspace configuration - hardened within container
+  //   "workspaceFolder": "/workspace",
+  // Mount workspace as tmpfs for complete hardening - no host file access.
+  // This ensures that the workspace is ephemeral and does not persist data.
+  //   "workspaceMount": "type=tmpfs,destination=/workspace,tmpfs-mode=1777"
+
+  // my GIT creds are being copied to the containre./.... maybe create a PAT wiht less permissso and use that onmy system and or coantier ?
+  // what else is ???
 }
+
+// https://www.youtube.com/watch?v=7Z7ID5BbZU4
+// what if malicious adds a precommit hook in .git ? I will not see it.. and then if I commit from my host I might be cooked.
