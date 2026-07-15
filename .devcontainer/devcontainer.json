@@ -27,6 +27,7 @@
   // Commands to run during container lifecycle
   "initializeCommand": "echo 'Initializing hardened dev container...'",
   "postStartCommand": "echo '🚀 Dev container is ready for Web3 development!'",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
   // Writable mounts in case you want to set --read-only above.
   // Currently no additional mounts are configured
   // can set .git to be readonly for example...
