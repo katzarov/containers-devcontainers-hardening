@@ -1,0 +1,12 @@
+[project]
+name = "uv-cooldown-check"
+version = "0.1.0"
+description = "Minimal uv project for testing package release cooldowns."
+requires-python = ">=3.12"
+dependencies = [
+    "pytest>=9.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

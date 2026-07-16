@@ -13,7 +13,7 @@ if [[ ! -x "${INSTALL_DIR}/uv" ]]; then
 fi
 
 cat > "${UV_CONFIG_DIR}/uv.toml" <<'EOF'
-exclude-newer = "30 days"
+exclude-newer = "60 days"
 EOF
 
 export PATH="${INSTALL_DIR}:${PATH}"
