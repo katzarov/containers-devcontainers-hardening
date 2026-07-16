@@ -1,12 +1,11 @@
 [project]
-name = "uv-cooldown-check"
+name = "render-cv"
 version = "0.1.0"
-description = "Minimal uv project for testing package release cooldowns."
+description = "Minimal uv project for running RenderCV."
 requires-python = ">=3.12"
 dependencies = [
-    "pytest>=9.0.0",
+    "rendercv[full]>=2.8",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.uv]
+package = false
