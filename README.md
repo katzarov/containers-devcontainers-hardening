@@ -1,5 +1,7 @@
 # containers-devcontainers-hardening
 
+devcontainer build --workspace-folder . --frozen-lockfile
+
 Devcontainers seem like a really cool thing Id want to try anyway as its a portable dev setup and can even use it in the cloud - GitHub Codespaces.
 Since they are just based on containers hardening those appies to all containers.
 
