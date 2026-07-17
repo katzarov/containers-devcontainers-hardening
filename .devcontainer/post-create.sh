@@ -31,6 +31,12 @@ export PATH="${INSTALL_DIR}:${PATH}"
 
 # Environment settings take precedence over untrusted project configuration.
 UV_HARDENING_ENV=(
+  "UV_DEFAULT_INDEX=https://pypi.org/simple"
+  "UV_EXCLUDE_NEWER=60 days"
+  "UV_REQUIRED_VERSION=>=0.11.28,<0.12"
+  "UV_INDEX_STRATEGY=first-index"
+  "UV_KEYRING_PROVIDER=disabled"
+  "UV_LINK_MODE=copy"
   "UV_LOCKED=1"
   "UV_MALWARE_CHECK=1"
   "UV_NO_BUILD=1"
@@ -50,7 +56,9 @@ if ! grep -Fqx "# uv hardening defaults" "${PROFILE_SNIPPET}"; then
 fi
 
 for setting in "${UV_HARDENING_ENV[@]}"; do
-  export_line="export ${setting}"
+  name="${setting%%=*}"
+  value="${setting#*=}"
+  export_line="export ${name}=\"${value}\""
   if ! grep -Fqx "${export_line}" "${PROFILE_SNIPPET}"; then
     printf "%s\n" "${export_line}" >> "${PROFILE_SNIPPET}"
   fi
