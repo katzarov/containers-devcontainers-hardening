@@ -77,3 +77,12 @@ And you can also specify a min release age cooldown.
 - create dedicated low-privilege user
 - do some process level sandboxing with tools like bwrap/firejail/Landlock
 - Deno, Node can specify file system and netwrok access permissions https://nodejs.org/docs/latest-v26.x/api/permissions.html But it doenst look like this gives any security guarantees, at least on Node...
+
+## Running Codex cli in a hardened devcontainer
+
+it works but sucks as the harness cannot establish its sandbox so it fallsback to asking me all the time..
+also seems like it cannot write to my files easily although it does work..
+
+these issues are mainly due to these security settings probably "--cap-drop=ALL", "--security-opt", "no-new-privileges", "--security-opt" "apparmor:docker-default"
+
+soo I need to think what I want to do :D
