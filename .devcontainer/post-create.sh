@@ -70,3 +70,5 @@ if [[ "$(uv --version)" != "uv ${UV_VERSION} "* ]]; then
 fi
 
 uv --version
+
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
