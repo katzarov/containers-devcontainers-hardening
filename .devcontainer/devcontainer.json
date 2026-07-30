@@ -25,7 +25,8 @@
   },
   "remoteUser": "vscode",
   // Commands to run during container lifecycle
-  "initializeCommand": "echo 'Initializing hardened dev container...'",
+  // change codex volume permissions as our main container does not privilages to do so
+  "initializeCommand": "docker container run --rm --user 0:0 --mount type=volume,source=codex-data,target=/data alpine:3.23 chown 1000:1000 /data", 
   "postStartCommand": "echo '🚀 Dev container is ready for Web3 development!'",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   // Docker run arguments for security hardening and resource management
@@ -59,7 +60,7 @@
     "--network=bridge", // Use bridge networking
     // DNS configuration for security and reliability
     "--dns=1.1.1.3", // Primary DNS (Cloudflare)
-    "--dns=1.0.0.3", // Secondary DNS (Cloudflare)
+    "--dns=1.0.0.3" // Secondary DNS (Cloudflare)
     // Resource limits for container performance and security
     // Play a little bit with resources to prevent resource exhaustion
     // "--memory=512m",                              // Memory limit (commented out)
@@ -67,9 +68,11 @@
     // network as well todo
   ],
   // Writable mounts in case you want to set --read-only above.
-  // Currently no additional mounts are configured
   // can set .git to be readonly for example...
-  "mounts": []
+  // Persist Codex sessions and configuration across container rebuilds
+  "mounts": [
+    "source=codex-data,target=/home/vscode/.codex,type=volume"
+  ]
   // Workspace configuration - hardened within container
   //   "workspaceFolder": "/workspace",
   // Mount workspace as tmpfs for complete hardening - no host file access.
