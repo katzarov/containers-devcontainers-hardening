@@ -48,6 +48,8 @@
     // Use seccomp's default security profile
     // seccomp provides system call filtering for additional security
     // "--security-opt", "seccomp=default",
+    "--security-opt",
+    "seccomp=unconfined", // Allow Codex/bwrap to create its nested sandbox
     // Network security configuration
     // If you really want to isolate it, just disconnect it from the internet. 
     // You should COPY your working files inside before, otherwise you'll have to mount them manually.
