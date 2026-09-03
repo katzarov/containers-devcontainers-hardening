@@ -31,7 +31,9 @@ x-hardening: &hardening
 services:
   devcontainer:
     <<: *hardening
-    image: mcr.microsoft.com/devcontainers/base:debian
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
     volumes:
       - type: bind
         source: ..
