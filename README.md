@@ -80,9 +80,18 @@ And you can also specify a min release age cooldown.
 
 ## Running Codex cli in a hardened devcontainer
 
-it works but sucks as the harness cannot establish its sandbox so it fallsback to asking me all the time..
-also seems like it cannot write to my files easily although it does work..
+Codex's Linux sandbox works in this container with the current pinned base image and
+the hardening settings in `.devcontainer/compose.yaml`. The important exception is
+Docker's outer seccomp policy: it is disabled so Codex can create its own inner
+bubblewrap/seccomp sandbox. Capabilities are still dropped, `no-new-privileges`
+remains enabled, and the Docker AppArmor profile is still requested.
 
-these issues are mainly due to these security settings probably "--cap-drop=ALL", "--security-opt", "no-new-privileges", "--security-opt" "apparmor:docker-default"
+The base image is deliberately pinned. A previous move of the floating `:debian`
+tag caused every sandboxed command to fail before the shell started with:
 
-soo I need to think what I want to do :D
+```text
+bwrap: Can't mount proc on /proc: Operation not permitted
+```
+
+See [Codex sandbox in the hardened Dev Container](docs/codex-sandbox.md) for the
+incident history, security trade-offs, upgrade procedure, and verification tests.
