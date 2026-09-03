@@ -33,10 +33,7 @@ services:
     <<: *hardening
     image: mcr.microsoft.com/devcontainers/base:debian
     volumes:
-      - type: bind
-        source: ..
-        target: /workspaces/containers-devcontainers-hardening
-        consistency: cached
+      - ..:/workspaces/containers-devcontainers-hardening:cached
       - type: volume
         source: codex-data
         target: /home/vscode/.codex
