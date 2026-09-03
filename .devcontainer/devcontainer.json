@@ -25,7 +25,9 @@
   "customizations": {
     "vscode": {
       "settings": {},
-      "extensions": []
+      "extensions": [
+        "docker.docker"
+      ]
     }
   },
   "remoteUser": "vscode",
