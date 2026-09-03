@@ -1,32 +1,43 @@
 x-hardening: &hardening
-  # Drop the same capabilities as the previous devcontainer runArgs.
+  # Remove Linux capabilities so container processes cannot perform privileged kernel operations.
   cap_drop:
-    - ALL
-    - NET_RAW
+    - ALL # Drop every capability from the effective and bounding capability sets.
+    - NET_RAW # Explicitly document that raw sockets are forbidden; redundant after ALL.
 
   security_opt:
-    - no-new-privileges
-    - apparmor:docker-default
-    # Codex/bwrap needs to create its nested sandbox.
+    - no-new-privileges # Prevent exec/setuid/file capabilities from granting new privileges.
+    - apparmor:docker-default # Request Docker's default AppArmor policy; enforcement depends on the Docker host/platform.
+
+    # Codex on Linux creates an inner sandbox with bubblewrap (`bwrap`) and its own seccomp policy.
+    # Docker's default *outer* seccomp profile can reject namespace-related syscalls or arguments
+    # before bwrap can create that inner sandbox, producing errors such as "No permissions to
+    # create new namespace". `seccomp=unconfined` disables only Docker's outer syscall filter:
+    # it does not make the container privileged, add capabilities, disable no-new-privileges,
+    # or disable AppArmor. The trade-off is that non-Codex processes in this container also lose
+    # Docker's default syscall allowlist, so keep the other hardening layers above. This setting
+    # is necessary for this setup but not sufficient by itself: the host kernel, user namespaces,
+    # and AppArmor must also permit the namespace and mount operations that bwrap requires.
     - seccomp=unconfined
 
   sysctls:
-    net.ipv6.conf.all.disable_ipv6: "1"
-    net.ipv6.conf.default.disable_ipv6: "1"
+    net.ipv6.conf.all.disable_ipv6: "1" # Disable IPv6 on all existing container interfaces.
+    net.ipv6.conf.default.disable_ipv6: "1" # Disable IPv6 by default on interfaces created later.
 
-  network_mode: bridge
+  network_mode: bridge # Use Docker NAT networking; this still permits outbound network access.
+  # Use Cloudflare's malware/adult-content filtering resolvers; DNS filtering is not an isolation boundary.
   dns:
     - 1.1.1.3
     - 1.0.0.3
 
   # Optional hardening and resource limits:
+  # noexec/nosuid reduce execution and privilege risks; size prevents unbounded tmpfs memory use.
   # tmpfs:
   #   - /tmp:rw,noexec,nosuid,size=512m
   #   - /var/tmp:rw,noexec,nosuid,size=512m
   #   - /dev/shm:rw,noexec,nosuid,size=64m
-  # mem_limit: 512m
-  # cpus: 2
-  # network_mode: none
+  # mem_limit: 512m # Limit memory exhaustion; may terminate the container if exceeded.
+  # cpus: 2 # Limit CPU consumption to two logical CPUs.
+  # network_mode: none # Strongest network isolation: remove all external container networking.
 
 services:
   devcontainer:
