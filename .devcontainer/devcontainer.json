@@ -1,6 +1,11 @@
 {
   "name": "base-setup",
-  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "dockerComposeFile": "compose.yaml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/containers-devcontainers-hardening",
+  "shutdownAction": "stopCompose",
+  // Match the default behavior of the previous image-based configuration.
+  "overrideCommand": true,
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       // "installZsh": true, // already in base debian image
@@ -29,52 +34,7 @@
   "initializeCommand": "docker container run --rm --user 0:0 --mount type=volume,source=codex-data,target=/data alpine:3.23 chown 1000:1000 /data", 
   "postStartCommand": "echo '🚀 Dev container is ready for Web3 development!'",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  // Docker run arguments for security hardening and resource management
-  "runArgs": [
-    // Temporary filesystem mounts with security restrictions
-    // These provide hardened, size-limited temporary storage
-    // "--tmpfs=/tmp:rw,noexec,nosuid,size=512m", // Main temporary directory
-    // "--tmpfs=/var/tmp:rw,noexec,nosuid,size=512m", // System temporary directory
-    // "--tmpfs=/dev/shm:rw,noexec,nosuid,size=64m", // Shared memory directory
-    // Security hardening - drop all Linux capabilities
-    // This reduces the attack surface by removing unnecessary privileges
-    "--cap-drop=ALL",
-    // Security options for container hardening
-    // A few security additions (AppArmor & no new privileges)
-    "--security-opt",
-    "no-new-privileges", // Prevent privilege escalation
-    "--security-opt",
-    "apparmor:docker-default", // Use Docker's default AppArmor profile
-    // Use seccomp's default security profile
-    // seccomp provides system call filtering for additional security
-    // "--security-opt", "seccomp=default",
-    "--security-opt",
-    "seccomp=unconfined", // Allow Codex/bwrap to create its nested sandbox
-    // Network security configuration
-    // If you really want to isolate it, just disconnect it from the internet. 
-    // You should COPY your working files inside before, otherwise you'll have to mount them manually.
-    // "--network=none",
-    // IPv6 security - disable IPv6 to reduce attack surface
-    "--sysctl=net.ipv6.conf.all.disable_ipv6=1", // Disable IPv6 globally
-    "--sysctl=net.ipv6.conf.default.disable_ipv6=1", // Disable IPv6 by default
-    // Network capability restrictions
-    "--cap-drop=NET_RAW", // Disable raw packet access
-    "--network=bridge", // Use bridge networking
-    // DNS configuration for security and reliability
-    "--dns=1.1.1.3", // Primary DNS (Cloudflare)
-    "--dns=1.0.0.3" // Secondary DNS (Cloudflare)
-    // Resource limits for container performance and security
-    // Play a little bit with resources to prevent resource exhaustion
-    // "--memory=512m",                              // Memory limit (commented out)
-    // "--cpus=2"                                    // CPU limit (commented out)
-    // network as well todo
-  ],
-  // Writable mounts in case you want to set --read-only above.
-  // can set .git to be readonly for example...
-  // Persist Codex sessions and configuration across container rebuilds
-  "mounts": [
-    "source=codex-data,target=/home/vscode/.codex,type=volume"
-  ]
+  // Docker runtime hardening, networking, and mounts are in compose.yaml.
   // Workspace configuration - hardened within container
   //   "workspaceFolder": "/workspace",
   // Mount workspace as tmpfs for complete hardening - no host file access.
